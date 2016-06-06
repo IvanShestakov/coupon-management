@@ -2,6 +2,8 @@ package beans;
 
 import java.util.Collection;
 
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement
 public class Customer {
 	private long id;
 	private String CustName;

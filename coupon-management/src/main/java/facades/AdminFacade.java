@@ -14,17 +14,23 @@ import dbdao.CustomerDBDAO;
 import exceptions.ApplicationException;
 import exceptions.ErrorType;
 
+
+
 public class AdminFacade implements CouponClientFacade {
+
+	
 	private CompanyDAO companydao;
 	private CustomerDAO customerdao;
 	private CouponDAO coupondao;
 
 	@Override
 	public CouponClientFacade login(String login, String password, ClientType clientType) {
-		
-		if (login == "Admin" && password == "1234" && clientType == ClientType.ADMIN) {
+		System.out.println("DEBUG: Entered AdminFacade login method");
+		if (login.equals("Admin") && password.equals("1234") && clientType.equals(ClientType.ADMIN)) {
+			System.out.println("DEBUG: Successfully authenticated on CouponClientFacade login method");
 			return new AdminFacade();
 		}
+		System.out.println("DEBUG: Failed to authenticate on CouponClientFacade login method");
 		return null;
 	}
 
@@ -33,7 +39,7 @@ public class AdminFacade implements CouponClientFacade {
 		customerdao = new CustomerDBDAO();
 		coupondao = new CouponDBDAO();
 	}
-
+	
 	public long createCompany(Company company) throws ApplicationException {
 		// Check if company with same name already exists. If not, call dao
 		// function to create company. Return new company id back to calling
@@ -45,7 +51,7 @@ public class AdminFacade implements CouponClientFacade {
 			throw new ApplicationException(ErrorType.COMPANY_ALREADY_EXISTS);
 		}
 	}
-
+	//TODO refactor the method to return Company instance.
 	public void removeCompany(long id) throws ApplicationException {
 
 		// To remove the company, validate it exists: if it
@@ -54,18 +60,19 @@ public class AdminFacade implements CouponClientFacade {
 		if (company == null) {
 			return;
 		}
-		// Get the list of all company's coupons.
+		// Get the list of all company's CouponResource.
 		Collection<Coupon> coupons = companydao.getCoupons(id);
-		// Iterate over list of coupons.
+		// Iterate over list of CouponResource.
 		for (Coupon c : coupons) {
 			long couponId = c.getId();
-			// Delete the coupon from coupons table as well as from join tables.
+			// Delete the coupon from CouponResource table as well as from join tables.
 			coupondao.removeCoupon(couponId);
 		}
 		// Finally delete the company.
 		companydao.removeCompany(id);
 	}
-
+	
+	//TODO refactor the method to return Company instance.
 	public void updateCompany(Company company) throws ApplicationException {
 		//Retrieve from database a company with provided id.
 		Company companyindb = companydao.getCompanyById(company.getId());
@@ -83,11 +90,12 @@ public class AdminFacade implements CouponClientFacade {
 	}
 
 	public Collection<Company> getAllCompanies() throws ApplicationException {
-		// Fetch all the companies from the persistence layer
+		// Fetch all the CompanyResource from the persistence layer
 		Collection<Company> allcompanies = companydao.getAllCompanies();
 		return allcompanies;
 	}
-
+	
+	
 	public long createCustomer(Customer customer) throws ApplicationException {
 		
 		// if customer with this name doesn't exist - create it and return it's id.
@@ -102,20 +110,20 @@ public class AdminFacade implements CouponClientFacade {
 		
 	
 	}
-
+	//TODO refactor the method to return Customer instance.
 	public void removeCustomer(long cust_id) throws ApplicationException {
 
-		// Before removal of the customer, iterate over their purchased coupons and remove them.
+		// Before removal of the customer, iterate over their purchased CouponResource and remove them.
 		Collection<Coupon> coupons = customerdao.getCoupons(cust_id);
 		for (Coupon c : coupons) {
 			coupondao.removeCouponForCustomer(c.getId(), cust_id);
 		}
-		// When all coupons have been removed, delete the customer
+		// When all CouponResource have been removed, delete the customer
 		customerdao.removeCustomer(cust_id);
 		
 		
 	}
-
+	//TODO refactor the method to return Customer instance.
 	public void updateCustomer(Customer customer) throws ApplicationException {
 		//Retrieve from database a customer with provided id.
 				Customer customerindb = customerdao.getCustomer(customer.getId());

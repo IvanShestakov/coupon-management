@@ -7,7 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import webapi.LoginAPI;
+
 public class ConnectionPool {
+	private static final Logger log = LogManager.getLogger(LoginAPI.class);
+	
 	private static ConnectionPool INSTANCE = new ConnectionPool();
 	private int POOLSIZE = 5;
 	private static ArrayList<Connection> connections;
@@ -37,7 +44,7 @@ public class ConnectionPool {
 	
 	public static void closeAllConnections() throws SQLException{
 		// Go over the connections list, and close each one of them
-		//System.out.println("Closing all connections");
+		log.debug("Closing all connections");
 		for (Connection c : connections) {
 			c.close();
 		}
@@ -55,7 +62,7 @@ public class ConnectionPool {
 		catch (IOException e){
 			e.printStackTrace();
 			//System.out.println("Failed to load properties file. Loading defaults.");
-			this.url = "jdbc:mysql://localhost:3306/coupons?useSSL=false";
+			this.url = "jdbc:mysql://localhost:3306/CouponResource?useSSL=false";
 			this.user = "Admin";
 			this.password = "1234";
 		}

@@ -2,11 +2,15 @@ package beans;
 
 import java.util.Collection;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+@XmlRootElement
 public class Company {
 	private long id;
 	private String CompName;
 	private String password;
 	private String email;
+	
 	private Collection<Coupon> coupons;
 	
 	public Company(){
@@ -45,8 +49,8 @@ public class Company {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-
+//XmlTransient is required to ignore the CouponResource when company info is requested.
+//@XmlTransient
 	public Collection<Coupon> getCoupons() {
 		return coupons;
 	}

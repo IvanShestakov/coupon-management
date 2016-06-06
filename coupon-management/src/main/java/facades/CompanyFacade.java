@@ -44,7 +44,7 @@ public class CompanyFacade implements CouponClientFacade {
 		companydao = new CompanyDBDAO();
 		coupondao = new CouponDBDAO();
 	}
-
+	//TODO refactor the method to return Coupon instance.
 	public Long CreateCoupon(Coupon coupon, Long comp_id) throws ApplicationException {
 		// Check that provided company id and the coupon are valid.
 		if (companydao.getCompanyById(comp_id) != null && coupon != null) {
@@ -58,7 +58,7 @@ public class CompanyFacade implements CouponClientFacade {
 		throw new ApplicationException(ErrorType.FAILED_TO_CREATE_COUPON);
 
 	}
-
+	//TODO refactor the method to return Coupon instance.
 	public void RemoveCoupon(Coupon coupon) throws ApplicationException {
 		// Check that the coupon provided is not null
 		if (coupon != null) {
@@ -66,7 +66,7 @@ public class CompanyFacade implements CouponClientFacade {
 			coupondao.removeCoupon(coupon.getId());
 		}
 	}
-
+	//TODO refactor the method to return Coupon instance.
 	public void UpdateCoupon(Coupon coupon) throws ApplicationException {
 		//Check that the coupon provided is not null and coupon with this id exists
 		if (coupon != null) {
@@ -91,21 +91,21 @@ public class CompanyFacade implements CouponClientFacade {
 	public Collection<Coupon> getAllCoupons(long comp_id) throws ApplicationException {
 		// Check whether company with this id exists
 		if (companydao.getCompanyById(comp_id) != null) {
-			// Return all company coupons
+			// Return all company CouponResource
 			return companydao.getCoupons(comp_id);
 		} else {
 			throw new ApplicationException(ErrorType.ENTITY_DOES_NOT_EXIST_IN_DB);
 		}
 	}
-
+	
 	public Collection<Coupon> getCouponByType(long comp_id, CouponType type) throws ApplicationException {
 		// Check whether company with this id exists
 				if (companydao.getCompanyById(comp_id)!=null) {
-					// Get all company coupons
+					// Get all company CouponResource
 					Collection<Coupon> allcoupons = companydao.getCoupons(comp_id);
 					//
 					Collection<Coupon> results = new HashSet<Coupon>();
-					// Iterate over all coupons and add those which have the correct type to results
+					// Iterate over all CouponResource and add those which have the correct type to results
 					for (Coupon c : allcoupons){
 						if (c.getType().equals(type)){
 							results.add(c);
@@ -118,14 +118,15 @@ public class CompanyFacade implements CouponClientFacade {
 				}
 				
 	}
+	
 	public Collection<Coupon> getCouponsCheaperThan(long comp_id, double coupon_price) throws ApplicationException {
 		// Check whether company with this id exists
 		if (companydao.getCompanyById(comp_id)!=null) {
-			// Get all company coupons
+			// Get all company CouponResource
 			Collection<Coupon> allcoupons = companydao.getCoupons(comp_id);
 			// Create temporary storage for results
 			Collection<Coupon> results = new HashSet<Coupon>();
-			// Iterate over all coupons and add those which have the price lower than required to results
+			// Iterate over all CouponResource and add those which have the price lower than required to results
 			for (Coupon c : allcoupons){
 				if (coupon_price > c.getPrice()){
 					results.add(c);
@@ -137,14 +138,15 @@ public class CompanyFacade implements CouponClientFacade {
 			throw new ApplicationException(ErrorType.ENTITY_DOES_NOT_EXIST_IN_DB);
 		}
 	}
+	
 	public Collection<Coupon> getCouponsExpiringBefore(long comp_id, Date end_date) throws ApplicationException {
 		// Check whether company with this id exists
 		if (companydao.getCompanyById(comp_id)!=null) {
-			// Get all company coupons
+			// Get all company CouponResource
 			Collection<Coupon> allcoupons = companydao.getCoupons(comp_id);
 			// Create temporary storage for results
 			Collection<Coupon> results = new HashSet<Coupon>();
-			// Iterate over all coupons and add those which have the end date earlier than required to results
+			// Iterate over all CouponResource and add those which have the end date earlier than required to results
 			for (Coupon c : allcoupons){
 /*				System.out.println("End date provided" + end_date);
 				System.out.println("Coupon's end date" + c.getEndDate());*/

@@ -221,7 +221,7 @@ public class CompanyDBDAO implements CompanyDAO {
 				company.setPassword(resultset.getString("password"));
 				company.setEmail(resultset.getString("email"));
 
-				companies.add(company); // Add the company to set of companies.
+				companies.add(company); // Add the company to set of CompanyResource.
 			}
 		} catch (SQLException e) {
 			throw new ApplicationException(ErrorType.FAILED_TO_EXECUTE_QUERY, e);
@@ -301,20 +301,20 @@ public class CompanyDBDAO implements CompanyDAO {
 
 	@Override
 	public Collection<Coupon> getCoupons(long id) throws ApplicationException {
-		// Return all coupons for specific company which id is provided
+		// Return all CouponResource for specific company which id is provided
 		Connection connection = ConnectionPool.getConnection();
 		Set<Coupon> coupons = new HashSet<Coupon>();
 		PreparedStatement statement = null;
 		ResultSet resultset = null;
 		try {
-			// First, a complex SQL statement is executed for all coupons of
+			// First, a complex SQL statement is executed for all CouponResource of
 			// specific company.
 			statement = connection.prepareStatement(
 					"SELECT coupon.id, coupon.title, coupon.start_date, coupon.end_date, coupon.amount, coupon.coupon_type, coupon.message, coupon.price, coupon.image  FROM company_coupon, company, coupon WHERE company_coupon.comp_id = company.id AND coupon.id = company_coupon.coupon_id AND company.id = ?;");
 			statement.setLong(1, id);
 			resultset = statement.executeQuery();
 			while (resultset != null && resultset.next()) { 
-			// Cycle through the resulting list of coupons for the
+			// Cycle through the resulting list of CouponResource for the
 			// company, and construct a coupon object and
 			// set it's properties.
 				Coupon coupon = new Coupon();
@@ -327,7 +327,7 @@ public class CompanyDBDAO implements CompanyDAO {
 				coupon.setMessage(resultset.getString("message"));
 				coupon.setPrice(resultset.getDouble("price"));
 				coupon.setImage(resultset.getString("image"));
-				// Add the coupon to set of company coupons.
+				// Add the coupon to set of company CouponResource.
 				coupons.add(coupon); 
 			}
 

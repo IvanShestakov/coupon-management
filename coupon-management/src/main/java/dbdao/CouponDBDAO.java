@@ -27,8 +27,8 @@ public class CouponDBDAO implements CouponDAO {
 		// coupon id as result of successful creation. -1 returns if failed to
 		// create.
 		long id = -1;
-		String sql = "INSERT INTO coupons.coupon (title, start_date, end_date, amount, coupon_type, message, price, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-		String sql_join = "INSERT INTO coupons.company_coupon (comp_id, coupon_id) VALUES (?, ?);";
+		String sql = "INSERT INTO CouponResource.coupon (title, start_date, end_date, amount, coupon_type, message, price, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+		String sql_join = "INSERT INTO CouponResource.company_coupon (comp_id, coupon_id) VALUES (?, ?);";
 		Connection connection = ConnectionPool.getConnection();
 		PreparedStatement ps = null, ps_join = null;
 		ResultSet rs = null;
@@ -73,10 +73,10 @@ public class CouponDBDAO implements CouponDAO {
 
 	@Override
 	public void removeCoupon(long id) throws ApplicationException {
-		//The SQL statement here deletes the coupon both from coupons table and from company_coupon table
+		//The SQL statement here deletes the coupon both from CouponResource table and from company_coupon table
 		Connection connection = ConnectionPool.getConnection();
 		PreparedStatement ps = null;
-		String sql = "DELETE coupons.coupon, coupons.company_coupon, coupons.customer_coupon FROM coupons.coupon INNER JOIN coupons.company_coupon INNER JOIN coupons.customer_coupon WHERE coupons.coupon.id=coupons.company_coupon.coupon_id AND coupons.coupon.id=coupons.customer_coupon.coupon_id AND coupons.coupon.id = ?;";
+		String sql = "DELETE CouponResource.coupon, CouponResource.company_coupon, CouponResource.customer_coupon FROM CouponResource.coupon INNER JOIN CouponResource.company_coupon INNER JOIN CouponResource.customer_coupon WHERE CouponResource.coupon.id=CouponResource.company_coupon.coupon_id AND CouponResource.coupon.id=CouponResource.customer_coupon.coupon_id AND CouponResource.coupon.id = ?;";
 		
 		try {
 			ps = connection.prepareStatement(sql);
@@ -104,7 +104,7 @@ public class CouponDBDAO implements CouponDAO {
 		Connection connection = ConnectionPool.getConnection();
 		PreparedStatement ps = null;
 		
-		String sql = "UPDATE coupons.coupon SET title = ?, start_date = ?, end_date = ?, amount = ?, coupon_type = ?, message = ?, price = ?, image = ? WHERE coupons.coupon.id = ? LIMIT 1;";
+		String sql = "UPDATE CouponResource.coupon SET title = ?, start_date = ?, end_date = ?, amount = ?, coupon_type = ?, message = ?, price = ?, image = ? WHERE CouponResource.coupon.id = ? LIMIT 1;";
 		
 		try {
 			ps = connection.prepareStatement(sql);
@@ -140,7 +140,7 @@ public class CouponDBDAO implements CouponDAO {
 		Connection connection = ConnectionPool.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = "SELECT id, title, start_date, end_date, amount, coupon_type, message, price, image FROM coupons.coupon WHERE coupon.id = ? LIMIT 1;";
+		String sql = "SELECT id, title, start_date, end_date, amount, coupon_type, message, price, image FROM CouponResource.coupon WHERE coupon.id = ? LIMIT 1;";
 		try {
 			ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setLong(1, id);
@@ -182,7 +182,7 @@ public class CouponDBDAO implements CouponDAO {
 		Connection connection = ConnectionPool.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = "SELECT id, title, start_date, end_date, amount, coupon_type, message, price, image FROM coupons.coupon;"; //Query all coupons data from coupon table.
+		String sql = "SELECT id, title, start_date, end_date, amount, coupon_type, message, price, image FROM CouponResource.coupon;"; //Query all CouponResource data from coupon table.
 		try {
 			ps = connection.prepareStatement(sql);
 			//System.out.println(ps.toString());
@@ -225,7 +225,7 @@ public class CouponDBDAO implements CouponDAO {
 		Connection connection = ConnectionPool.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = "SELECT id, title, start_date, end_date, amount, coupon_type, message, price, image FROM coupons.coupon WHERE coupon_type = ?;"; //Query all coupons with specified type from coupon table.
+		String sql = "SELECT id, title, start_date, end_date, amount, coupon_type, message, price, image FROM CouponResource.coupon WHERE coupon_type = ?;"; //Query all CouponResource with specified type from coupon table.
 		try {
 			ps = connection.prepareStatement(sql);
 			ps.setString(1, coupontype.name());
@@ -266,7 +266,7 @@ public class CouponDBDAO implements CouponDAO {
 	public void purchaseCouponForCustomer(long couponId, long custId) throws ApplicationException {
 		Connection connection = ConnectionPool.getConnection();
 		PreparedStatement ps = null;
-		String sql = "INSERT INTO coupons.customer_coupon (cust_id, coupon_id) VALUES (?, ?);";
+		String sql = "INSERT INTO CouponResource.customer_coupon (cust_id, coupon_id) VALUES (?, ?);";
 		
 		try {
 			ps = connection.prepareStatement(sql);
@@ -293,7 +293,7 @@ public class CouponDBDAO implements CouponDAO {
 	public void removeCouponForCustomer(long couponId, long custId) throws ApplicationException {
 		Connection connection = ConnectionPool.getConnection();
 		PreparedStatement ps = null;
-		String sql = "DELETE FROM coupons.customer_coupon WHERE coupon_id= ? AND cust_id=?;";
+		String sql = "DELETE FROM CouponResource.customer_coupon WHERE coupon_id= ? AND cust_id=?;";
 		
 		try {
 			ps = connection.prepareStatement(sql);

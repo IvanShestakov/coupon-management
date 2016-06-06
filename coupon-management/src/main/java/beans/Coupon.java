@@ -2,6 +2,8 @@ package beans;
 
 import java.sql.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement
 public class Coupon {
 	private long id;
 	private String title;
