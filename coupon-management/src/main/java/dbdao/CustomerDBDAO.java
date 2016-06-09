@@ -27,7 +27,7 @@ public class CustomerDBDAO implements CustomerDAO {
 	public long createCustomer(Customer customer) throws ApplicationException {
 		long id = -1; // Return -1 if the customer creation fails for some
 						// reason.
-		String sql = "INSERT INTO CouponResource.customer (cust_name, password) VALUES (?, ?);";
+		String sql = "INSERT INTO coupons.customer (cust_name, password) VALUES (?, ?);";
 		Connection connection = ConnectionPool.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -61,7 +61,7 @@ public class CustomerDBDAO implements CustomerDAO {
 	public void removeCustomer(long id) throws ApplicationException {
 		Connection connection = ConnectionPool.getConnection();
 		PreparedStatement ps = null;
-		String sql = "DELETE FROM CouponResource.customer WHERE id= ? LIMIT 1;";
+		String sql = "DELETE FROM coupons.customer WHERE id= ? LIMIT 1;";
 
 		try {
 			ps = connection.prepareStatement(sql);
@@ -83,7 +83,7 @@ public class CustomerDBDAO implements CustomerDAO {
 
 	@Override
 	public void updateCustomer(Customer customer) throws ApplicationException {
-		String sql = "UPDATE CouponResource.customer SET cust_name = ? , password = ? WHERE CouponResource.customer.id = ? LIMIT 1;";
+		String sql = "UPDATE coupons.customer SET cust_name = ? , password = ? WHERE coupons.customer.id = ? LIMIT 1;";
 		Connection connection = ConnectionPool.getConnection();
 		PreparedStatement ps = null;
 
@@ -114,7 +114,7 @@ public class CustomerDBDAO implements CustomerDAO {
 		Connection connection = ConnectionPool.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = "SELECT id, cust_name, password FROM CouponResource.customer WHERE CouponResource.customer.id = ? LIMIT 1;";
+		String sql = "SELECT id, cust_name, password FROM coupons.customer WHERE coupons.customer.id = ? LIMIT 1;";
 		try {
 			ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setLong(1, id);
@@ -151,7 +151,7 @@ public class CustomerDBDAO implements CustomerDAO {
 		Connection connection = ConnectionPool.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = "SELECT id, cust_name, password FROM CouponResource.customer WHERE CouponResource.customer.cust_name = ? LIMIT 1;";
+		String sql = "SELECT id, cust_name, password FROM coupons.customer WHERE coupons.customer.cust_name = ? LIMIT 1;";
 		try {
 			ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, cust_name);
@@ -188,7 +188,7 @@ public class CustomerDBDAO implements CustomerDAO {
 
 		try {
 			PreparedStatement statement = connection
-					.prepareStatement("SELECT id, cust_name, password FROM CouponResource.customer;"); // Retrieve
+					.prepareStatement("SELECT id, cust_name, password FROM coupons.customer;"); // Retrieve
 																								// all
 																								// customer
 																								// records
@@ -224,19 +224,19 @@ public class CustomerDBDAO implements CustomerDAO {
 
 	@Override
 	public Collection<Coupon> getCoupons(long customerId) throws ApplicationException {
-		// Return all CouponResource for specific customer which id is provided
+		// Return all coupons for specific customer which id is provided
 		Connection connection = ConnectionPool.getConnection();
 		Set<Coupon> coupons = new HashSet<Coupon>();
 
 		try {
-			// First, a complex SQL statement is executed for all CouponResource of
+			// First, a complex SQL statement is executed for all coupons of
 			// specific customer.
 			PreparedStatement statement = connection.prepareStatement(
 					"SELECT coupon.id, coupon.title, coupon.start_date, coupon.end_date, coupon.amount, coupon.coupon_type, coupon.message, coupon.price, coupon.image  FROM customer_coupon, customer, coupon WHERE customer_coupon.cust_id = customer.id AND coupon.id = customer_coupon.coupon_id AND customer.id = ?;");
 			statement.setLong(1, customerId);
 			ResultSet resultset = statement.executeQuery();
 			while (resultset != null && resultset.next()) {
-				// Cycle through the resulting list of CouponResource for the
+				// Cycle through the resulting list of coupons for the
 				// customer, and construct a coupon object and set it's
 				// properties.
 				Coupon coupon = new Coupon();
@@ -249,7 +249,7 @@ public class CustomerDBDAO implements CustomerDAO {
 				coupon.setMessage(resultset.getString("message"));
 				coupon.setPrice(resultset.getDouble("price"));
 				coupon.setImage(resultset.getString("image"));
-				// Add the coupon to set of CustomerResource CouponResource.
+				// Add the coupon to set of CustomerResource coupons.
 				coupons.add(coupon); 
 										
 			}
@@ -275,7 +275,7 @@ public class CustomerDBDAO implements CustomerDAO {
 		Connection connection = ConnectionPool.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = "SELECT id, cust_name, password FROM CouponResource.customer WHERE CouponResource.customer.cust_name = ? AND CouponResource.customer.password = ? LIMIT 1;";
+		String sql = "SELECT id, cust_name, password FROM coupons.customer WHERE coupons.customer.cust_name = ? AND coupons.customer.password = ? LIMIT 1;";
 		try {
 			ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, custName);
@@ -311,7 +311,7 @@ public class CustomerDBDAO implements CustomerDAO {
 		Connection connection = ConnectionPool.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = "SELECT cust_id FROM CouponResource.customer_coupon WHERE CouponResource.customer_coupon.coupon_id = ?;";
+		String sql = "SELECT cust_id FROM coupons.customer_coupon WHERE coupons.customer_coupon.coupon_id = ?;";
 		try {
 			ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setLong(1, coupon_id);
@@ -342,7 +342,7 @@ public class CustomerDBDAO implements CustomerDAO {
 		Connection connection = ConnectionPool.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = "SELECT id FROM CouponResource.customer WHERE CouponResource.customer.cust_name = ?;";
+		String sql = "SELECT id FROM coupons.customer WHERE coupons.customer.cust_name = ?;";
 		try {
 			ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, cust_name);
@@ -373,8 +373,8 @@ public class CustomerDBDAO implements CustomerDAO {
 		Boolean exists = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		//String sql = "SELECT id FROM CouponResource.customer WHERE CouponResource.customer.cust_name = ?;";
-		String sql = "SELECT EXISTS(SELECT 1 FROM CouponResource.customer WHERE CouponResource.customer.id = ?);";
+		//String sql = "SELECT id FROM coupons.customer WHERE coupons.customer.cust_name = ?;";
+		String sql = "SELECT EXISTS(SELECT 1 FROM coupons.customer WHERE coupons.customer.id = ?);";
 		try {
 			ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setLong(1, customerId);

@@ -60,12 +60,12 @@ public class AdminFacade implements CouponClientFacade {
 		if (company == null) {
 			return;
 		}
-		// Get the list of all company's CouponResource.
+		// Get the list of all company's coupons.
 		Collection<Coupon> coupons = companydao.getCoupons(id);
-		// Iterate over list of CouponResource.
+		// Iterate over list of coupons.
 		for (Coupon c : coupons) {
 			long couponId = c.getId();
-			// Delete the coupon from CouponResource table as well as from join tables.
+			// Delete the coupon from coupons table as well as from join tables.
 			coupondao.removeCoupon(couponId);
 		}
 		// Finally delete the company.
@@ -113,12 +113,12 @@ public class AdminFacade implements CouponClientFacade {
 	//TODO refactor the method to return Customer instance.
 	public void removeCustomer(long cust_id) throws ApplicationException {
 
-		// Before removal of the customer, iterate over their purchased CouponResource and remove them.
+		// Before removal of the customer, iterate over their purchased coupons and remove them.
 		Collection<Coupon> coupons = customerdao.getCoupons(cust_id);
 		for (Coupon c : coupons) {
 			coupondao.removeCouponForCustomer(c.getId(), cust_id);
 		}
-		// When all CouponResource have been removed, delete the customer
+		// When all coupons have been removed, delete the customer
 		customerdao.removeCustomer(cust_id);
 		
 		

@@ -27,7 +27,7 @@ public class DailyCouponExpirationTask extends TimerTask{
 	
 	private void DeleteExpiredCoupons() throws ApplicationException {
 		Date today = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-		//Get all existing CouponResource from coupondao
+		//Get all existing coupons from coupondao
 		Collection<Coupon> allCoupons = coupondao.getAllCoupons();
 		
 		//Iterate over each coupon and check it's expiration date

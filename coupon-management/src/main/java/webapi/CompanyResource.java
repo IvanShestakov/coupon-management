@@ -23,7 +23,7 @@ import beans.Company;
 import exceptions.ApplicationException;
 import facades.AdminFacade;
 
-@Path("/CompanyResource")
+@Path("/companies")
 
 public class CompanyResource {
 	private static final Logger log = LogManager.getLogger(CompanyResource.class);
@@ -35,7 +35,7 @@ public class CompanyResource {
 		log.debug("Session ID in CompanyResource" + session.getId());
 
 		AdminFacade adminFacade = (AdminFacade) session.getAttribute("Facade");
-		log.debug("Fetching ALL CompanyResource");
+		log.debug("Fetching ALL companies");
 		return adminFacade.getAllCompanies();
 	}
 	
@@ -84,7 +84,7 @@ public class CompanyResource {
 		log.debug("Removed company " + companyId);
 	}
 	
-	@Path("/{companyId}/CouponResource")
+	@Path("/{companyId}/coupons")
 	public CouponResource getCompanyCoupons(){
 		return new CouponResource();
 	}

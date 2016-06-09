@@ -62,7 +62,7 @@ public class ConnectionPool {
 		catch (IOException e){
 			e.printStackTrace();
 			//System.out.println("Failed to load properties file. Loading defaults.");
-			this.url = "jdbc:mysql://localhost:3306/CouponResource?useSSL=false";
+			this.url = "jdbc:mysql://localhost:3306/coupons?useSSL=false";
 			this.user = "Admin";
 			this.password = "1234";
 		}

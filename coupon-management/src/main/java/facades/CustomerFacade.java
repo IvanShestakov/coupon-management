@@ -37,8 +37,8 @@ public class CustomerFacade implements CouponClientFacade{
 				}
 				return null;
 	}
-	//TODO refactor the method to return Coupon instance.
-	public void purchaseCouponForCustomer(long couponId, long customerId) throws ApplicationException{
+	
+	public Coupon purchaseCouponForCustomer(long couponId, long customerId) throws ApplicationException{
 		//Validate that coupon with provided id exists, it's expiration date has not passed yet and it's amount is greater than 0.
 		//Validate that customer with provided id exists and doesn't already have the requested coupon. 
 		Coupon coupon = coupondao.getCoupon(couponId);
@@ -62,13 +62,14 @@ public class CustomerFacade implements CouponClientFacade{
 		if (customer!=null && coupon!=null && couponAmount>0){
 			//Record the coupon purchase in the db
 			coupondao.purchaseCouponForCustomer(couponId, customerId);
-			//Update the amount of available CouponResource.
+			//Update the amount of available coupons.
 			coupon.setAmount(couponAmount-1);
 			coupondao.updateCoupon(coupon);
 		}
+		return coupon;
 	}
 	public Collection<Coupon> getAllPurchasedCoupons(long customerId) throws ApplicationException{
-		//Retrieve all customer CouponResource and return as the results
+		//Retrieve all customer coupons and return as the results
 		Collection<Coupon> customercoupons = null;
 		if (customerdao.isCustomerWithIdExists(customerId)) {
 			customercoupons = customerdao.getCoupons(customerId);
@@ -78,12 +79,12 @@ public class CustomerFacade implements CouponClientFacade{
 	}
 	
 	public Collection<Coupon> getPurchasedCouponsByType(long customerId, CouponType type) throws ApplicationException{
-		//Create empty result collection of CouponResource
+		//Create empty result collection of coupons
 		Collection<Coupon> result = new HashSet<Coupon>();
-		//Retrieve all customer CouponResource
+		//Retrieve all customer coupons
 		Collection<Coupon> customercoupons = getAllPurchasedCoupons(customerId);
 		
-		//Iterate over CouponResource and add CouponResource of correct type to result
+		//Iterate over coupons and add coupons of correct type to result
 		for (Coupon c : customercoupons){
 			if (c.getType().equals(type)){
 				result.add(c);
@@ -94,12 +95,12 @@ public class CustomerFacade implements CouponClientFacade{
 	}
 	
 	public Collection<Coupon> getPurchasedCouponsByPrice(long customerId, double price) throws ApplicationException{
-		//Create empty result collection of CouponResource
+		//Create empty result collection of coupons
 		Collection<Coupon> result = new HashSet<Coupon>();
-		//Retrieve all customer CouponResource
+		//Retrieve all customer coupons
 		Collection<Coupon> customercoupons = getAllPurchasedCoupons(customerId);
 		
-		//Iterate over CouponResource and add CouponResource to result if their price is lower than requested
+		//Iterate over coupons and add coupons to result if their price is lower than requested
 		for (Coupon c : customercoupons){
 			if (c.getPrice() < price){
 				result.add(c);

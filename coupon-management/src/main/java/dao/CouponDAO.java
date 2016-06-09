@@ -10,7 +10,7 @@ public interface CouponDAO {
 
 	public long createCoupon(Coupon coupon, Long companyId) throws ApplicationException;
 	public void removeCoupon(long id) throws ApplicationException;
-	public void updateCoupon(Coupon coupon) throws ApplicationException;
+	public Coupon updateCoupon(Coupon coupon) throws ApplicationException;
 	public Coupon getCoupon(long id) throws ApplicationException;
 	public Collection<Coupon> getAllCoupons() throws ApplicationException;
 	public Collection<Coupon> getCouponByType(CouponType coupontype) throws ApplicationException;

@@ -26,7 +26,7 @@ import beans.Customer;
 import exceptions.ApplicationException;
 import facades.AdminFacade;
 
-@Path("/CustomerResource")
+@Path("/customers")
 
 public class CustomerResource {
 	private static final Logger log = LogManager.getLogger(CustomerResource.class);
@@ -83,7 +83,7 @@ public class CustomerResource {
 		return customer;
 	}
 	
-	@Path("/{customerId}/CouponResource")
+	@Path("/{customerId}/coupons")
 	public CouponResource getCustomerCoupons(){
 		return new CouponResource();
 	}
