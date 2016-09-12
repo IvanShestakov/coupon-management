@@ -21,7 +21,6 @@ public class CompanyFacade implements CouponClientFacade {
 	@Override
 	public CouponClientFacade login(String login, String password, ClientType clientType) throws ApplicationException {
 		// Verify that company with this name exists
-		try {
 		if (companydao.getCompanyByName(login) != null) {
 			// Validate that name and password provided match those in the
 			// database.
@@ -29,22 +28,15 @@ public class CompanyFacade implements CouponClientFacade {
 					&& clientType.equals(ClientType.COMPANY)) {
 				return new CompanyFacade();
 			}
-			else {
-				throw new ApplicationException(ErrorType.FAILED_TO_LOGIN);
-			}
 		}
-		}
-		catch (ApplicationException e){
-		throw new ApplicationException(ErrorType.FAILED_TO_LOGIN, e);
-		}
-		return null;
+		throw new ApplicationException(ErrorType.FAILED_TO_LOGIN);
 	}
 
 	public CompanyFacade() {
 		companydao = new CompanyDBDAO();
 		coupondao = new CouponDBDAO();
 	}
-	
+
 	public Coupon CreateCoupon(Coupon coupon, Long comp_id) throws ApplicationException {
 		// Check that provided company id and the coupon are valid.
 		if (companydao.getCompanyById(comp_id) != null && coupon != null) {
@@ -58,22 +50,23 @@ public class CompanyFacade implements CouponClientFacade {
 		throw new ApplicationException(ErrorType.FAILED_TO_CREATE_COUPON);
 
 	}
+
 	public void RemoveCoupon(long couponId) throws ApplicationException {
-		
-			// Remove the coupon and all it's occurrences in the database.
-			coupondao.removeCoupon(couponId);
+
+		// Remove the coupon and all it's occurrences in the database.
+		coupondao.removeCoupon(couponId);
 
 	}
-	
+
 	public Coupon UpdateCoupon(Coupon coupon) throws ApplicationException {
-		//Check that the coupon provided is not null and coupon with this id exists
+		// Check that the coupon provided is not null and coupon with this id
+		// exists
 		if (coupon != null) {
 			return coupondao.updateCoupon(coupon);
-		}
-		else {
+		} else {
 			throw new ApplicationException(ErrorType.COUPON_DETAILS_ARE_INVALID);
 		}
-		
+
 	}
 
 	public Coupon getCoupon(Long id) throws ApplicationException {
@@ -96,67 +89,69 @@ public class CompanyFacade implements CouponClientFacade {
 			throw new ApplicationException(ErrorType.ENTITY_DOES_NOT_EXIST_IN_DB);
 		}
 	}
-	
+
 	public Collection<Coupon> getCouponByType(long comp_id, CouponType type) throws ApplicationException {
 		// Check whether company with this id exists
-				if (companydao.getCompanyById(comp_id)!=null) {
-					// Get all company coupons
-					Collection<Coupon> allcoupons = companydao.getCoupons(comp_id);
-					//
-					Collection<Coupon> results = new HashSet<Coupon>();
-					// Iterate over all coupons and add those which have the correct type to results
-					for (Coupon c : allcoupons){
-						if (c.getType().equals(type)){
-							results.add(c);
-						}
-					}
-					return results;
-				}
-				else {
-					throw new ApplicationException(ErrorType.ENTITY_DOES_NOT_EXIST_IN_DB);
-				}
-				
-	}
-	
-	public Collection<Coupon> getCouponsCheaperThan(long comp_id, double coupon_price) throws ApplicationException {
-		// Check whether company with this id exists
-		if (companydao.getCompanyById(comp_id)!=null) {
+		if (companydao.getCompanyById(comp_id) != null) {
 			// Get all company coupons
 			Collection<Coupon> allcoupons = companydao.getCoupons(comp_id);
-			// Create temporary storage for results
+			//
 			Collection<Coupon> results = new HashSet<Coupon>();
-			// Iterate over all coupons and add those which have the price lower than required to results
-			for (Coupon c : allcoupons){
-				if (coupon_price > c.getPrice()){
+			// Iterate over all coupons and add those which have the correct
+			// type to results
+			for (Coupon c : allcoupons) {
+				if (c.getType().equals(type)) {
 					results.add(c);
 				}
 			}
 			return results;
-		}
-		else {
+		} else {
 			throw new ApplicationException(ErrorType.ENTITY_DOES_NOT_EXIST_IN_DB);
 		}
+
 	}
-	
-	public Collection<Coupon> getCouponsExpiringBefore(long comp_id, Date end_date) throws ApplicationException {
+
+	public Collection<Coupon> getCouponsCheaperThan(long comp_id, double coupon_price) throws ApplicationException {
 		// Check whether company with this id exists
-		if (companydao.getCompanyById(comp_id)!=null) {
+		if (companydao.getCompanyById(comp_id) != null) {
 			// Get all company coupons
 			Collection<Coupon> allcoupons = companydao.getCoupons(comp_id);
 			// Create temporary storage for results
 			Collection<Coupon> results = new HashSet<Coupon>();
-			// Iterate over all coupons and add those which have the end date earlier than required to results
-			for (Coupon c : allcoupons){
-/*				System.out.println("End date provided" + end_date);
-				System.out.println("Coupon's end date" + c.getEndDate());*/
-				if (end_date.after(c.getEndDate())){
+			// Iterate over all coupons and add those which have the price lower
+			// than required to results
+			for (Coupon c : allcoupons) {
+				if (coupon_price > c.getPrice()) {
+					results.add(c);
+				}
+			}
+			return results;
+		} else {
+			throw new ApplicationException(ErrorType.ENTITY_DOES_NOT_EXIST_IN_DB);
+		}
+	}
+
+	public Collection<Coupon> getCouponsExpiringBefore(long comp_id, Date end_date) throws ApplicationException {
+		// Check whether company with this id exists
+		if (companydao.getCompanyById(comp_id) != null) {
+			// Get all company coupons
+			Collection<Coupon> allcoupons = companydao.getCoupons(comp_id);
+			// Create temporary storage for results
+			Collection<Coupon> results = new HashSet<Coupon>();
+			// Iterate over all coupons and add those which have the end date
+			// earlier than required to results
+			for (Coupon c : allcoupons) {
+				/*
+				 * System.out.println("End date provided" + end_date);
+				 * System.out.println("Coupon's end date" + c.getEndDate());
+				 */
+				if (end_date.after(c.getEndDate())) {
 
 					results.add(c);
 				}
 			}
 			return results;
-		}
-		else {
+		} else {
 			throw new ApplicationException(ErrorType.ENTITY_DOES_NOT_EXIST_IN_DB);
 		}
 	}

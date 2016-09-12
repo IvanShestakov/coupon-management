@@ -1,9 +1,9 @@
-package webapi;
+package web.resources;
 
 import java.util.Collection;
 
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -19,15 +19,12 @@ import javax.ws.rs.core.MediaType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.sun.media.jfxmedia.Media;
-
-import beans.Company;
 import beans.Customer;
 import exceptions.ApplicationException;
 import facades.AdminFacade;
 
 @Path("/customers")
-
+@RolesAllowed("ADMIN")
 public class CustomerResource {
 	private static final Logger log = LogManager.getLogger(CustomerResource.class);
 	
@@ -54,6 +51,7 @@ public class CustomerResource {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Customer createCustomer(@Context HttpServletRequest request, Customer customer) throws ApplicationException{
 		HttpSession session = request.getSession(false);
 		AdminFacade adminFacade = (AdminFacade) session.getAttribute("Facade");
@@ -74,6 +72,7 @@ public class CustomerResource {
 	
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{customerId}")
 	public Customer updateCustomer(@Context HttpServletRequest request, Customer customer) throws ApplicationException{
 		HttpSession session = request.getSession(false);
@@ -82,7 +81,7 @@ public class CustomerResource {
 		log.debug("Updated customer " + customer.getCustName());
 		return customer;
 	}
-	
+	@RolesAllowed({"CUSTOMER", "ADMIN"})
 	@Path("/{customerId}/coupons")
 	public CouponResource getCustomerCoupons(){
 		return new CouponResource();

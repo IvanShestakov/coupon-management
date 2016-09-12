@@ -7,7 +7,11 @@
     <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
     <init-param>
       <param-name>jersey.config.server.provider.packages</param-name>
-      <param-value>webapi</param-value>
+      <param-value>web</param-value>
+    </init-param>
+    <init-param>
+      <param-name>jersey.config.server.provider.classnames</param-name>
+      <param-value>web.filters.CORSFilter</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
@@ -15,5 +19,41 @@
     <servlet-name>Jersey Web Application</servlet-name>
     <url-pattern>/webapi/*</url-pattern>
   </servlet-mapping>
+  
+  <filter>
+  <filter-name>CorsFilter</filter-name>
+  <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+  <init-param>
+    <param-name>cors.allowed.methods</param-name>
+    <param-value>GET,POST,HEAD,OPTIONS,PUT,DELETE</param-value>
+  </init-param>
+  <init-param>
+    <param-name>cors.allowed.headers</param-name>
+    <param-value>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers</param-value>
+  </init-param>
+</filter>
 
+<filter-mapping>
+  <filter-name>CorsFilter</filter-name>
+  <url-pattern>/webapi/*</url-pattern>
+</filter-mapping>
+
+
+<!--   <filter>
+   <filter-name>LoginRequestFilter</filter-name>
+   <filter-class>web.filters.LoginRequestFilter</filter-class>
+</filter>
+<filter-mapping>
+   <filter-name>LoginRequestFilter</filter-name>
+   <url-pattern>/webapi/*</url-pattern>
+</filter-mapping> 
+  <filter>
+    <filter-name>cors</filter-name>
+    <filter-class>web.filters.CORSFilter</filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>cors</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+-->
 </web-app>

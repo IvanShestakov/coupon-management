@@ -10,7 +10,7 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import webapi.LoginAPI;
+import web.LoginAPI;
 
 public class ConnectionPool {
 	private static final Logger log = LogManager.getLogger(LoginAPI.class);

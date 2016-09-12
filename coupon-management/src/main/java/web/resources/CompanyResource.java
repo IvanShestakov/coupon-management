@@ -1,9 +1,9 @@
-package webapi;
+package web.resources;
 
 import java.util.Collection;
 
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -24,10 +24,10 @@ import exceptions.ApplicationException;
 import facades.AdminFacade;
 
 @Path("/companies")
-
+@RolesAllowed("ADMIN")
 public class CompanyResource {
 	private static final Logger log = LogManager.getLogger(CompanyResource.class);
-	
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Company> getCompanies(@Context HttpServletRequest request) throws ApplicationException {
@@ -39,7 +39,7 @@ public class CompanyResource {
 		return adminFacade.getAllCompanies();
 	}
 	
-	
+
 	@GET
 	@Path("/{companyId}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -53,6 +53,7 @@ public class CompanyResource {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Company createCompany(@Context HttpServletRequest request, Company company) throws ApplicationException{
 		HttpSession session = request.getSession(false);
 		AdminFacade adminFacade = (AdminFacade) session.getAttribute("Facade");
@@ -64,6 +65,7 @@ public class CompanyResource {
 	
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Company updateCompany(@Context HttpServletRequest request, Company company) throws ApplicationException{
 		HttpSession session = request.getSession(false);
 		AdminFacade adminFacade = (AdminFacade) session.getAttribute("Facade");
@@ -84,6 +86,7 @@ public class CompanyResource {
 		log.debug("Removed company " + companyId);
 	}
 	
+	@RolesAllowed({"ADMIN", "COMPANY"})
 	@Path("/{companyId}/coupons")
 	public CouponResource getCompanyCoupons(){
 		return new CouponResource();

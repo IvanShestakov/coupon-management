@@ -1,4 +1,4 @@
-package webapi;
+package web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,6 +8,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,10 +30,10 @@ import org.apache.logging.log4j.Logger;
  * }
  */
 
-import CouponSystem.CouponSystem;
 import beans.User;
 import exceptions.ApplicationException;
 import facades.CouponClientFacade;
+import system.CouponSystem;
 
 @Path("/login")
 public class LoginAPI {
@@ -49,16 +51,22 @@ public class LoginAPI {
 		if (facade != null) {
 			log.info("Successfully authenticated user " + user.getUsername());
 			HttpSession session = request.getSession(true);
+			//Those 2 attributes will be used to set security context.
 			session.setAttribute("Facade", facade);
+			session.setAttribute("User", user);
 			session.setMaxInactiveInterval(10 * 60);
 			
+			response.setStatus(Status.OK.getStatusCode());
 			log.debug("Session ID in login" + session.getId());
 		} else {
 			log.debug("Failed to authenticate user: " + user.getUsername() + " Password:"
 					+ user.getPassword() + " User Type: " + user.getType());
-
+			response.setStatus(Status.UNAUTHORIZED.getStatusCode());
+			
+			
 		}
 		// return Response.status(Status.UNAUTHORIZED).build();
+		//return (Response) response;
 
 	}
 

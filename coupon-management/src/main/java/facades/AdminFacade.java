@@ -2,6 +2,9 @@ package facades;
 
 import java.util.Collection;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import beans.Company;
 import beans.Coupon;
 import beans.Customer;
@@ -17,6 +20,7 @@ import exceptions.ErrorType;
 
 
 public class AdminFacade implements CouponClientFacade {
+	private static final Logger log = LogManager.getLogger(CouponClientFacade.class);
 
 	
 	private CompanyDAO companydao;
@@ -24,14 +28,14 @@ public class AdminFacade implements CouponClientFacade {
 	private CouponDAO coupondao;
 
 	@Override
-	public CouponClientFacade login(String login, String password, ClientType clientType) {
-		System.out.println("DEBUG: Entered AdminFacade login method");
+	public CouponClientFacade login(String login, String password, ClientType clientType) throws ApplicationException {
+		log.debug("Entered AdminFacade login method");
 		if (login.equals("Admin") && password.equals("1234") && clientType.equals(ClientType.ADMIN)) {
-			System.out.println("DEBUG: Successfully authenticated on CouponClientFacade login method");
+			log.debug("Successfully authenticated on AdminFacade login method");
 			return new AdminFacade();
 		}
-		System.out.println("DEBUG: Failed to authenticate on CouponClientFacade login method");
-		return null;
+		log.debug("Failed to authenticate on AdminFacade login method");
+		throw new ApplicationException(ErrorType.FAILED_TO_LOGIN);
 	}
 
 	public AdminFacade() {

@@ -3,7 +3,6 @@ package beans;
 import java.util.Collection;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 public class Company {
 	private long id;

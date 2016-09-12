@@ -1,4 +1,4 @@
-package CouponSystem;
+package system;
 
 import java.sql.SQLException;
 import java.util.Timer ;
@@ -14,7 +14,7 @@ import facades.CompanyFacade;
 import facades.CouponClientFacade;
 import facades.CustomerFacade;
 import tasks.DailyCouponExpirationTask;
-import webapi.CustomerResource;
+import web.resources.CustomerResource;
 
 
 public class CouponSystem {

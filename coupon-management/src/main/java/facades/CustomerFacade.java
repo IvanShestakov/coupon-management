@@ -35,7 +35,7 @@ public class CustomerFacade implements CouponClientFacade{
 						return new CustomerFacade();
 					}
 				}
-				return null;
+				throw new ApplicationException(ErrorType.FAILED_TO_LOGIN);
 	}
 	
 	public Coupon purchaseCouponForCustomer(long couponId, long customerId) throws ApplicationException{

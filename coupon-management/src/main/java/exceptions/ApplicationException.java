@@ -10,13 +10,13 @@ public class ApplicationException extends Exception {
 		super();
 		this.errortype = errortype;
 		this.exception = e;
-		//System.out.println(errortype);
+		
 	}
 
 	public ApplicationException(ErrorType errortype) {
 		super();
 		this.errortype = errortype;
-		//System.out.println(errortype);
+		
 	}
 	
 	
