@@ -20,7 +20,7 @@
     <url-pattern>/webapi/*</url-pattern>
   </servlet-mapping>
   
-  <filter>
+<!--   <filter>
   <filter-name>CorsFilter</filter-name>
   <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
   <init-param>
@@ -36,7 +36,7 @@
 <filter-mapping>
   <filter-name>CorsFilter</filter-name>
   <url-pattern>/webapi/*</url-pattern>
-</filter-mapping>
+</filter-mapping> -->
 
 
 <!--   <filter>
