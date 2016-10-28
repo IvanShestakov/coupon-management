@@ -17,6 +17,8 @@ public class CompanyFacade implements CouponClientFacade {
 
 	private CompanyDAO companydao;
 	private CouponDAO coupondao;
+	
+	private Long id;
 
 	@Override
 	public CouponClientFacade login(String login, String password, ClientType clientType) throws ApplicationException {
@@ -26,7 +28,7 @@ public class CompanyFacade implements CouponClientFacade {
 			// database.
 			if (password.equals(companydao.getCompanyByName(login).getPassword())
 					&& clientType.equals(ClientType.COMPANY)) {
-				return new CompanyFacade();
+				return new CompanyFacade(companydao.getCompanyByName(login).getId());
 			}
 		}
 		throw new ApplicationException(ErrorType.FAILED_TO_LOGIN);
@@ -35,6 +37,12 @@ public class CompanyFacade implements CouponClientFacade {
 	public CompanyFacade() {
 		companydao = new CompanyDBDAO();
 		coupondao = new CouponDBDAO();
+	}
+	//Added this constructor at later phase to return user id to client.
+	public CompanyFacade(Long id) {
+		companydao = new CompanyDBDAO();
+		coupondao = new CouponDBDAO();
+		this.id = id;
 	}
 
 	public Coupon CreateCoupon(Coupon coupon, Long comp_id) throws ApplicationException {
@@ -154,5 +162,10 @@ public class CompanyFacade implements CouponClientFacade {
 		} else {
 			throw new ApplicationException(ErrorType.ENTITY_DOES_NOT_EXIST_IN_DB);
 		}
+	}
+
+	@Override
+	public Long getId() {
+		return this.id;
 	}
 }

@@ -27,6 +27,9 @@ public class AdminFacade implements CouponClientFacade {
 	private CustomerDAO customerdao;
 	private CouponDAO coupondao;
 
+
+	private Long id = 1L;
+
 	@Override
 	public CouponClientFacade login(String login, String password, ClientType clientType) throws ApplicationException {
 		log.debug("Entered AdminFacade login method");
@@ -150,6 +153,11 @@ public class AdminFacade implements CouponClientFacade {
 	public Collection<Customer> getAllCustomers() throws ApplicationException {
 		Collection<Customer> allcustomers = customerdao.getAllCustomers();
 		return allcustomers;
+	}
+
+	@Override
+	public Long getId() {
+		return this.id ;
 	}
 
 }

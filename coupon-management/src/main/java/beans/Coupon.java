@@ -92,7 +92,6 @@ public class Coupon {
 	}
 	@Override
 	public String toString(){
-		//TODO improve toString method to return more coupon attributes
 		String result ="|Coupon ID: " + this.id + " |Title: " + this.title + " |Start Date"+this.startDate +" |Exp.date: " + this.endDate + " |Price: " + this.getPrice();
 		return result;}
 

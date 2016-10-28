@@ -29,7 +29,7 @@ import facades.CustomerFacade;
 @PermitAll
 @Path("/coupons")
 public class CouponResource {
-	private static final Logger log = LogManager.getLogger(CompanyResource.class);
+	private static final Logger log = LogManager.getLogger(CouponResource.class);
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

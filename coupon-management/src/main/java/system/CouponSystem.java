@@ -51,7 +51,6 @@ public class CouponSystem {
 		System.exit(0);
 	}
 	public CouponClientFacade login(String login, String password, ClientType type) throws ApplicationException{
-		//TODO Review this solution with other guys
 		log.debug("Entered CouponClientFacade login() method");
 		log.debug("User" + login + " Password " + password + "Type " + type);
 		CouponClientFacade result = null;

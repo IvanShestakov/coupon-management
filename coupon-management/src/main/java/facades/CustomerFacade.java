@@ -19,9 +19,18 @@ public class CustomerFacade implements CouponClientFacade{
 	private CustomerDAO customerdao;
 	private CouponDAO coupondao;
 	
+	private Long id;
+
 	public CustomerFacade(){
 		customerdao = new CustomerDBDAO();
 		coupondao = new CouponDBDAO();
+
+	}
+	//Added this constructor at later phase to allow returning user Id to the client
+	public CustomerFacade(Long id){
+		customerdao = new CustomerDBDAO();
+		coupondao = new CouponDBDAO();
+		this.id = id;
 	}
 	
 	@Override
@@ -32,7 +41,7 @@ public class CustomerFacade implements CouponClientFacade{
 					// database.
 					if (password.equals(customerdao.getCustomerByName(login).getPassword())
 							&& clientType.equals(ClientType.CUSTOMER)) {
-						return new CustomerFacade();
+						return new CustomerFacade(customerdao.getCustomerByName(login).getId());
 					}
 				}
 				throw new ApplicationException(ErrorType.FAILED_TO_LOGIN);
@@ -108,6 +117,11 @@ public class CustomerFacade implements CouponClientFacade{
 		}
 		//Return the resulting set
 		return result;
+	}
+
+	@Override
+	public Long getId() {
+		return this.id;
 	}
 	
 }

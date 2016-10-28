@@ -10,10 +10,8 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import web.LoginAPI;
-
 public class ConnectionPool {
-	private static final Logger log = LogManager.getLogger(LoginAPI.class);
+	private static final Logger log = LogManager.getLogger(ConnectionPool.class);
 	
 	private static ConnectionPool INSTANCE = new ConnectionPool();
 	private int POOLSIZE = 5;
